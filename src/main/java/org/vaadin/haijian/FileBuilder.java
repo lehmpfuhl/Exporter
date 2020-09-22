@@ -83,29 +83,29 @@ public abstract class FileBuilder<T> {
     }
 
     private void buildHeaderRow() {
-      onNewRow();
-      if (columnHeaders == null) {
-        columns.forEach(column -> {
-            Optional<PropertyDefinition<T, ?>> propertyDefinition = propertySet.getProperty(column.getKey());
-            if (propertyDefinition.isPresent()) {
-                onNewCell();
-                buildColumnHeaderCell(propertyDefinition.get().getCaption());
-            } else {
-                LoggerFactory.getLogger(this.getClass()).warn(String.format("Column key %s is a property which cannot be found", column.getKey()));
-            }
-        });
-      } else {
-        columns.forEach(column -> { 
-          String columnHeader = columnHeaders.get(column);
-          if (columnHeader != null) {
-            onNewCell();
-            buildColumnHeaderCell(columnHeader);
-          } else {
-              LoggerFactory.getLogger(this.getClass()).warn(String.format("Column with key %s have not column header value defined in map", column.getKey()));
-          }
-        });
+        onNewRow();
+        if (columnHeaders == null) {
+            columns.forEach(column -> {
+                Optional<PropertyDefinition<T, ?>> propertyDefinition = propertySet.getProperty(column.getKey());
+                if (propertyDefinition.isPresent()) {
+                    onNewCell();
+                    buildColumnHeaderCell(propertyDefinition.get().getCaption());
+                } else {
+                    LoggerFactory.getLogger(this.getClass()).warn(String.format("Column key %s is a property which cannot be found", column.getKey()));
+                }
+            });
+        } else {
+            columns.forEach(column -> {
+                String columnHeader = columnHeaders.get(column);
+                if (columnHeader != null) {
+                    onNewCell();
+                    buildColumnHeaderCell(columnHeader);
+                } else {
+                    LoggerFactory.getLogger(this.getClass()).warn(String.format("Column with key %s have not column header value defined in map", column.getKey()));
+                }
+            });
+        }
     }
-  }
 
 
     void buildColumnHeaderCell(String header) {
